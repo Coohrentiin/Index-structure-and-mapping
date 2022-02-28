@@ -15,8 +15,10 @@ consumption.
 - Can you show memory / speed trade-offs (e.g. by using count tables vs. no
 count tables)? Take care to get an efficient implementation of search - note
 that full count tables would allow linear search or at least O(n log n).
+
 **Project alternative:** Use enhanced suffix array in place of BWT. Implement
 linear search using LCP and child tables; compare against search without such
 extra-tables. (Abouelhoda, et al. 2004)
+
 **Remark:** No need for very efficient construction of the data structure; rather
 focus on search efficiency (due to additional tables) and space consumption.
