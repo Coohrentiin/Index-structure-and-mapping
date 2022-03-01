@@ -61,7 +61,6 @@ class BWT(object):
             if self.suffix_trie == None:
                 raise "First compute suffix array"
             n=len(self.text)
-            trie = copy.deepcopy(self.suffix_trie)
             BWT=''
             for i in range(n):
                 BWT+=self.text[self.sa[i][1]-1]
@@ -100,7 +99,6 @@ class BWT(object):
         def narrow_start(i: int, c: int, s=0, e=end):
             for j in range(start,end+1):
                 if self.L[j][0]==c:
-                    print('start:',j,'->',self.R[j][1])
                     return self.R[j][1]
             return end
         
@@ -108,7 +106,6 @@ class BWT(object):
         def narrow_end(i: int, c: int, s=0, e=end):
             for j in reversed(range(start,end+1)):
                 if self.L[j][0]==c:
-                    print('end:',j,'->',self.R[j][1])
                     return self.R[j][1]
             return start
         
@@ -116,11 +113,10 @@ class BWT(object):
         for i,c in enumerate(x[::-1]):
             start = n_start
             end = n_end
-            print("_____",c,"_____")
             n_start = narrow_start(i, c, s=start, e=end)
             n_end   = narrow_end(i, c, s=start, e=end)
             if start>end:
                 return None
 
         # At this step answer are between start and end -> need sa sorted to reconstruct 
-        return(start,end) #send back the possible position found in SA
+        return([self.sa[i] for i in range(start, end+1)]) #send back the possible position found in SA
