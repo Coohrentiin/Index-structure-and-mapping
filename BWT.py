@@ -117,6 +117,7 @@ class BWT(object):
             n_end   = narrow_end(i, c, s=start, e=end)
             if start>end:
                 return None
-
+        result = [self.sa[i] for i in range(start, end+1)]
+        result.sort(key = lambda x: x[1])
         # At this step answer are between start and end -> need sa sorted to reconstruct 
-        return([self.sa[i] for i in range(start, end+1)]) #send back the possible position found in SA
+        return(result) #send back the possible position found in SA
