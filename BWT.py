@@ -94,29 +94,44 @@ class BWT(object):
     def bwt_search(self, x):
         start = 0
         end = len(self.L)-1 #index from 0
-        
-        ## ADD CODE HERE
+
         def narrow_start(i: int, c: int, s=0, e=end):
-            for j in range(start,end+1):
+            for j in range(s,e+1):
                 if self.L[j][0]==c:
-                    return self.R[j][1]
+                    return j
             return end
         
 
         def narrow_end(i: int, c: int, s=0, e=end):
-            for j in reversed(range(start,end+1)):
+            for j in reversed(range(s,e+1)):
                 if self.L[j][0]==c:
-                    return self.R[j][1]
+                    return j
             return start
         
-        n_start=start;n_end=end
+        def narrow_start_right(i: int, c: int, s=0, e=end):
+            for j in range(s,e+1):
+                if self.R[j][0]==c:
+                    return self.R[j][1]
+            return start
+
+        def narrow_end_right(i: int, c: int, s=0, e=end):
+            for j in reversed(range(s,e+1)):
+                if self.R[j][0]==c:
+                    return self.R[j][1]
+            return end
+
         for i,c in enumerate(x[::-1]):
-            start = n_start
-            end = n_end
             n_start = narrow_start(i, c, s=start, e=end)
             n_end   = narrow_end(i, c, s=start, e=end)
+            if i<len(x)-1:
+                c_next=x[::-1][i+1]
+                start = narrow_start_right(i, c_next, s=n_start, e=n_end)
+                end   = narrow_end_right(i, c_next, s=n_start, e=n_end)                          
+            else:
+                break #return(start,end)
             if start>end:
                 return None
+        
         result = [self.sa[i] for i in range(start, end+1)]
         result.sort(key = lambda x: x[1])
         # At this step answer are between start and end -> need sa sorted to reconstruct 
