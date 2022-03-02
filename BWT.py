@@ -120,15 +120,13 @@ class BWT(object):
                     return self.R[j][1]
             return end
 
-        for i,c in enumerate(x[::-1]):
-            n_start = narrow_start(i, c, s=start, e=end)
-            n_end   = narrow_end(i, c, s=start, e=end)
-            if i<len(x)-1:
-                c_next=x[::-1][i+1]
-                start = narrow_start_right(i, c_next, s=n_start, e=n_end)
-                end   = narrow_end_right(i, c_next, s=n_start, e=n_end)                          
-            else:
-                break #return(start,end)
+        n_start = narrow_start(0, x[-1], s=start, e=end)
+        n_end   = narrow_end(0, x[-1], s=start, e=end)
+        for i,c in enumerate(x[:-1][::-1]):
+            start = narrow_start_right(i, c, s=n_start, e=n_end)
+            end   = narrow_end_right(i, c, s=n_start, e=n_end)
+            n_start = start
+            n_end = end                             
             if start>end:
                 return None
         
