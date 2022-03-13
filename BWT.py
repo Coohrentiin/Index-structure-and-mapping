@@ -168,7 +168,10 @@ class BWT(object):
             if start>end:
                 return None
         
-        result = [self.sa[i] for i in range(start, end+1)]
+        if start != end or (len(self.sa[start][0])>len(x) and self.sa[start][0][:len(x)]==x):
+            result = [self.sa[i] for i in range(start, end+1)]
+        else:
+            result = []
         result.sort(key = lambda x: x[1])
         # At this step answer are between start and end -> need sa sorted to reconstruct 
         return(result) #send back the possible position found in SA
