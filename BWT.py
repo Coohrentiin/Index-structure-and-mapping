@@ -1,3 +1,4 @@
+from enum import Flag
 import numpy as np
 import time 
 import memory_profiler
@@ -149,26 +150,30 @@ class BWT(object):
         def narrow_start_right(i: int, c: int, s=0, e=end):
             for j in range(s,e+1):
                 if self.R[j][0]==c:
-                    return self.R[j][1]
-            return start
+                    return self.R[j][1],False
+            return start,True
 
         def narrow_end_right(i: int, c: int, s=0, e=end):
             for j in reversed(range(s,e+1)):
                 if self.R[j][0]==c:
-                    return self.R[j][1]
-            return end
+                    return self.R[j][1],False
+            return end,True
 
         n_start = narrow_start(0, x[-1], s=start, e=end)
         n_end   = narrow_end(0, x[-1], s=start, e=end)
         for i,c in enumerate(x[:-1][::-1]):
-            start = narrow_start_right(i, c, s=n_start, e=n_end)
-            end   = narrow_end_right(i, c, s=n_start, e=n_end)
+            start,flag = narrow_start_right(i, c, s=n_start, e=n_end)
+            end,flag   = narrow_end_right(i, c, s=n_start, e=n_end)
             n_start = start
             n_end = end                             
             if start>end:
                 return None
+            if flag:
+                break
         
-        if start != end or (len(self.sa[start][0])>len(x) and self.sa[start][0][:len(x)]==x):
+        if flag:
+            result = []
+        elif start != end or (len(self.sa[start][0])>len(x) and self.sa[start][0][:len(x)]==x):
             result = [self.sa[i] for i in range(start, end+1)]
         else:
             result = []
