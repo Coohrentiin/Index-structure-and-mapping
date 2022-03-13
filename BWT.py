@@ -16,6 +16,11 @@ class BWT(object):
         self.suffix_trie = None
 
     def compute_sufixe_array(self):
+        """Compute the suffix array
+
+        Returns:
+            list: suffix array, also store in self.sa
+        """
         trie = Trie()
         words=[]
         for i in range(len(self.text)):
@@ -24,6 +29,11 @@ class BWT(object):
             trie.insert(word,i)
 
         def compress_trie(trie):
+            """Compress a tree, ie errase all the node with only one branch
+
+            Args:
+                trie (Trie): new trie
+            """
             for i,(label,child) in enumerate(trie.children):
                 compress_trie(child)
                 if len(child.children) == 1:
@@ -35,6 +45,14 @@ class BWT(object):
 
         
         def construct_suffix_array(tree):
+            """Construct a suffix array from a tree
+
+            Args:
+                tree (tree): suffix tree
+
+            Returns:
+                list: suffix array
+            """
             sa=list()
             for (label, child) in tree.children:
                 if len(child.children) == 0:
@@ -44,10 +62,20 @@ class BWT(object):
                     for (label_c,child_c) in sa_child:
                         sa.append((label+label_c,child_c))
             return sa
+
         self.sa = construct_suffix_array(trie)
         return self.sa
+
     # @profile
     def construct_bwt(self, naive=False):
+        """Construct the BWT sentense
+
+        Args:
+            naive (bool, optional): If true use naive method, without suffix array. Defaults to False.
+
+        Returns:
+            str: bwt sentence
+        """
         if naive:
             n=len(self.text)
             sa=[]
@@ -91,8 +119,17 @@ class BWT(object):
         self.R = R
 
         return BWT
+
     # @profile
     def bwt_search(self, x):
+        """Search x in self.text by BWT method (self has to have a bwt sentence)
+
+        Args:
+            x (str): word we are looking for
+
+        Returns:
+            list: possible positions
+        """
         start = 0
         end = len(self.L)-1 #index from 0
 
