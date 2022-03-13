@@ -3,6 +3,7 @@ import time
 import memory_profiler
 from Trees import Tree, Trie
 import copy
+from memory_profiler import *
 
 class BWT(object):
     def __init__(self,text):
@@ -45,7 +46,7 @@ class BWT(object):
             return sa
         self.sa = construct_suffix_array(trie)
         return self.sa
-    
+    # @profile
     def construct_bwt(self, naive=False):
         if naive:
             n=len(self.text)
@@ -90,7 +91,7 @@ class BWT(object):
         self.R = R
 
         return BWT
-    
+    # @profile
     def bwt_search(self, x):
         start = 0
         end = len(self.L)-1 #index from 0
