@@ -26,3 +26,4 @@ focus on search efficiency (due to additional tables) and space consumption.
 **Ideas**:
 - Memory consumption: use https://pypi.org/project/memory-profiler/
 - Time consumption: use https://docs.python.org/fr/3/library/time.html
+git 
