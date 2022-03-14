@@ -133,7 +133,8 @@ class BWT(object):
         """
         start = 0
         end = len(self.L)-1 #index from 0
-
+        flag = False
+        
         def narrow_start(i: int, c: int, s=0, e=end):
             for j in range(s,e+1):
                 if self.L[j][0]==c:
@@ -173,10 +174,8 @@ class BWT(object):
         
         if flag:
             result = []
-        elif start != end or (len(self.sa[start][0])>len(x) and self.sa[start][0][:len(x)]==x):
-            result = [self.sa[i] for i in range(start, end+1)]
         else:
-            result = []
+            result = [self.sa[i] for i in range(start, end+1)]
         result.sort(key = lambda x: x[1])
         # At this step answer are between start and end -> need sa sorted to reconstruct 
         return(result) #send back the possible position found in SA
